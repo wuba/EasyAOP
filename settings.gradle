@@ -1,0 +1,6 @@
+rootProject.name = "EasyAOP"
+include ':sample'
+include ':EasyAOPPlugin'
+include ':EasyAopASM'
+include ':EasyTools'
+include ':EasyAopCfg'

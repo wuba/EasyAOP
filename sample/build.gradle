@@ -1,0 +1,38 @@
+import com.builder.versions.DepTable
+
+apply plugin: 'com.android.application'
+
+//apply plugin: 'com.wuba.plugin.easyaop'
+
+android {
+    compileSdkVersion 31
+    defaultConfig {
+        applicationId "com.wuba.easyaopdemo"
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    }
+    buildToolsVersion '30.0.2'
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    implementation DepTable.Android.X.appcompat
+    implementation DepTable.Android.material
+    implementation DepTable.Android.X.constraintLayout
+}

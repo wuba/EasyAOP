@@ -1,0 +1,51 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+
+import com.builder.ModelTable
+import com.builder.publish.PublisherMgr
+import com.builder.versions.DepTable
+
+ModelTable.rootProject = getRootProject();
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+        google()
+
+    }
+    dependencies {
+        classpath DepTable.Build.gradle
+        classpath DepTable.Build.builder
+        classpath DepTable.Kotlin.kotlin_gradle_plugin
+//        classpath 'com.wuba.easyaop:gradlePlugin:0.1.1-SNAPSHOT'
+    }
+}
+
+
+allprojects { project ->
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+    }
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'org.jetbrains.kotlin') {
+                if (details.requested.name == 'kotlin-gradle-plugin' || details.requested.name == 'kotlin-reflect' || details.requested.name == 'kotlin-stdlib-jdk8') {
+                    println("kotlin=>${details.requested};;using Verison:${DepTable.Kotlin.version}")
+                    details.useVersion DepTable.Kotlin.version
+                } else {
+                    println("kotlin lib=>${details.requested}")
+                }
+
+            }
+        }
+    }
+    PublisherMgr.config(project)
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

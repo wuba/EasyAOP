@@ -1,0 +1,106 @@
+version: "1.0.0"
+logEnabled: true
+#输出日志level; VERBOSE:1;DEBUG:2;WARN:3;ERROR:4
+logLevel: 2
+needAopCheck: false
+needDexCheck: false
+skipClazz:
+  - _regex_^\S+\.R\.class$
+  - _regex_^\S+\.R\$anim\.class$
+  - _regex_^\S+\.R\$array\.class$
+  - _regex_^\S+\.R\$attr\.class$
+  - _regex_^\S+\.R\$animator\.class$
+  - _regex_^\S+\.R\$bool\.class$
+  - _regex_^\S+\.R\$color\.class$
+  - _regex_^\S+\.R\$dimen\.class$
+  - _regex_^\S+\.R\$drawable\.class$
+  - _regex_^\S+\.R\$font\.class$
+  - _regex_^\S+\.R\$integer\.class$
+  - _regex_^\S+\.R\$id\.class$
+  - _regex_^\S+\.R\$interpolator\.class$
+  - _regex_^\S+\.R\$layout\.class$
+  - _regex_^\S+\.R\$menu\.class$
+  - _regex_^\S+\.R\$mipmap\.class$
+  - _regex_^\S+\.R\$navigation\.class$
+  - _regex_^\S+\.R\$plurals\.class$
+  - _regex_^\S+\.R\$raw\.class$
+  - _regex_^\S+\.R\$string\.class$
+  - _regex_^\S+\.R\$style\.class$
+  - _regex_^\S+\.R\$styleable\.class$
+  - _regex_^\S+\.R\$xml\.class$
+
+skipJars:
+  # eg: jetified-kotlin-stdlib-jdk7-1.3.50.jar
+  - _regex_^\S+kotlin-stdlib-jdk\d-(\d+\.)+jar$
+  # eg: jetified-kotlin-stdlib-1.3.50.jar
+  - _regex_^\S+kotlin-stdlib-(\d+\.)+jar$
+
+proxyItemsCfg:
+  #调用目标类
+  "com.wuba.easyaopdemo.Waiter":
+    enabled: false
+    # 调用替换代理类
+    proxyClass: "com.wuba.proxy.WaiterProxy"
+    methodMappingList:
+      # 目标方法名称##目标方法描述（可省略，省略后就是全匹配）: 代理方法名称
+      "drink##(Landroid/content/Context;)V": "drinkBeer"
+      "tea##(Ljava/lang/String;)Ljava/lang/String;": "specialTea"
+
+  "android.content.pm.PackageManager":
+    enabled: false
+    proxyClass: "com.wuba.proxy.TestProxy"
+    methodMappingList:
+      "getInstalledPackages": "getInstalledPackages"
+
+  android.telephony.TelephonyManager:
+    enabled: false
+    proxyClass: "com.wuba.proxy.TestProxy"
+    methodMappingList:
+      "getCellLocation": "getCellLocation"
+      "getAllCellInfo": "getAllCellInfo"
+      "getLine1Number": "getLine1Number"
+      "getImei": "getImei"
+      "getDeviceId": "getDeviceId"
+      "getSubscriberId": "getSubscriberId"
+
+  java.lang.reflect.Method:
+    enabled: true
+    proxyClass: "com.wuba.proxy.TestProxy"
+    methodMappingList:
+      "invoke": "invoke"
+
+
+#  "android/telephony/TelephonyManager" {
+#            enable = true
+#            hookerClass = "com/wuba/permission/TelephonyManagerProxy"
+#            targetHookMethodsMap = [
+#                    "getCellLocation": "getCellLocation",
+#                    "getAllCellInfo" : "getAllCellInfo",
+#                    "getLine1Number" : "getLine1Number",
+#                    "getImei"        : "getImei",
+#                    "getDeviceId"    : "getDeviceId",
+#                    "getSubscriberId": "getSubscriberId",
+#            ]
+#        }
+
+
+emptyItemsCfg:
+  #  eg: OAID sdk 热修复后弹toast问题 方法置空
+  "com.wuba.easyaopdemo.Waiter":
+    enabled: false
+    methodList:
+      - "waitingErrorTime##()V"
+
+insertItemsCfg:
+  "com.wuba.easyaopdemo.Waiter":
+    enabled: false
+    #    方法体头部插入配置：
+    insertEnterClass: "com.wuba.proxy.WaiterProxy"
+    insertEnterMethodName: "insertMethodEnter"
+    targetEnterMethodList:
+      - "makeTea##(I)V"
+    insertExitClass: "com.wuba.proxy.WaiterProxy"
+    insertExitMethodName: "insertMethodExit"
+    targetExitMethodList:
+      - "makeTea##(I)V"
+

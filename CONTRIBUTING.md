@@ -57,4 +57,4 @@ Use [Code Style](https://github.com/wuba/EasyAOP/blob/master/checkstyle.xml) for
 
 ## License
 By contributing to EasyAOP, you agree that your contributions will be licensed
-under its [BSD LICENSE](https://github.com/wuba/EasyAOP/blob/master/LICENSE)
+under its [BSD LICENSE](https://github.com/wuba/EasyAOP/blob/main/LICENSE.txt)

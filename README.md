@@ -43,7 +43,7 @@
 
 在`Android`上接入`EasyAOP`的`gradle plugin`后仅需要在配置文件中添加如下配置即可：
 </br>
-![方法代理配置示例](./doc/res/method_proxy_demo_2.png)
+![方法代理配置示例](./doc/res/method_proxy_demo_3.png)
 </br>
 
 编译完成，所有关于`com.tea.Waiter.class` 中的 `drink`和`tea`方法调用都会替换成`com.test.WaiterProxy.class` 中的`drinkBeer`和`specialTea`的调用。
